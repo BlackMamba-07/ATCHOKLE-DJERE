@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+}
+
+/* Custom theme utilities */
+.page-bg {
+    min-height: 100vh;
+    color: #fff;
+    background-color: #065a43;
+}
+.app-container {
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5rem;
+}
+
+.surface-card {
+    backdrop-filter: blur(4px);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.06);
+    outline: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.btn-ghost {
+    composes: btn;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+.btn-outline {
+    composes: btn;
+    border: 1px solid #065a43;
+    color: #065a43;
+    background: #fff;
+}
+.btn-primary-solid {
+    composes: btn;
+    background: #065a43;
+    color: #fff;
+    padding: 0.625rem 1.25rem;
+}
+
+.text-primary {
+    color: #065a43;
+}
+.bg-primary {
+    background-color: #065a43;
+}
+.border-primary {
+    border-color: #065a43;
+}
+.muted {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    color: #065a43;
+}
+.input-green {
+    width: 100%;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #065a43;
+    color: #065a43;
+    background: #fff;
+}
+.input-green::placeholder {
+    color: rgba(6, 90, 67, 0.6);
+}
+.checkbox-green {
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #065a43;
+    border-radius: 0.25rem;
+}
