@@ -15,7 +15,7 @@
                     <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&auto=format&fit=crop" alt="Visual" class="w-full h-full object-cover opacity-40">
                 </div>
                 <div class="max-w-sm text-white">
-                    <p class="text-white/80 text-sm mb-2">Atchokré Djere</p>
+                    <p class="text-white/80 text-sm mb-2" style= "color: #BEF264 ">Atchokré Djere</p>
                     <h1 class="text-3xl md:text-4xl font-extrabold leading-tight">Explorez de nouveaux horizons,<br>un pas à la fois.</h1>
                     <p class="mt-4 text-white/80">Rejoignez la communauté et gérez vos adhésions facilement.</p>
                 </div>

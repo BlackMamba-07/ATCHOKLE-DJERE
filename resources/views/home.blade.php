@@ -44,7 +44,7 @@
                 <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold leading-none">BIENVENU</h1>
                 <p class="mt-6 text-white/80 max-w-xl">Atchokré Djere est un portail ou vous pouvez ajouter des membres via un formulaire.</p>
                 <div class="mt-8 flex items-center gap-4">
-                    <a href="#catalogue" class="inline-flex items-center gap-2 rounded-full bg-lime-400 text-emerald-950 hover:bg-lime-300 px-5 py-3 font-semibold">Se connecter</a>
+                    <a href="{{ route('login') }}" class="inline-flex items-center gap-2 rounded-full bg-lime-400 text-emerald-950 hover:bg-lime-300 px-5 py-3 font-semibold">Se connecter</a>
                     <a href="{{ route('members.create') }}" class="inline-flex items-center rounded-full bg-white/10 hover:bg-white/20 px-5 py-3">Ajouter un membre</a>
                 </div>
             </div>
