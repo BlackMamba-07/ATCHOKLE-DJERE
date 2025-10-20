@@ -82,7 +82,7 @@
                         <td class="px-4 py-3 text-center border-l-2 border-r-2 border-white/20">{{ $member->join_year }}</td>
                         <td class="px-4 py-3 text-center border-l-2 border-white/20">
                             <div class="flex justify-center gap-2">
-                                <button class="action-btn btn-voir p-2 text-blue-600 rounded-lg border border-blue-200" onclick="openMemberModal({{ $member->id }})" title="Voir">
+                                <button class="action-btn btn-voir p-2 text-blue-600 rounded-lg border border-blue-200" onclick="openPhotoModal('{{ asset('storage/'.ltrim($member->photo_path ?? '', '/')) }}')" title="Voir">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -93,7 +93,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                     </svg>
                                 </a>
-                                <button class="action-btn btn-imprimer p-2 text-white rounded-lg border border-white/30" onclick="printMemberCard({{ $member->id }})" title="Imprimer">
+                                <button class="action-btn btn-imprimer p-2 text-white rounded-lg border border-white/30" onclick="openPrintPreview({{ $member->id }})" title="Imprimer">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                                     </svg>
@@ -146,6 +146,32 @@
             </div>
         </div>
 
+        <!-- Print Preview Modal -->
+        <div id="print-preview-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closePrintPreview()"></div>
+            <div class="relative bg-white rounded-lg shadow-xl max-w-full p-0 z-10 flex flex-col" style="width: min(95vw, 95vh); height: min(95vw, 95vh);">
+                <div class="flex items-center justify-between px-3 py-2 border-b border-gray-200 shrink-0">
+                    <div class="text-emerald-900 font-semibold">Aperçu d'impression</div>
+                    <button class="btn-ghost" onclick="closePrintPreview()">Fermer</button>
+                </div>
+                <iframe id="print-preview-frame" src="about:blank" class="w-full flex-1 overflow-hidden" style="border:0;" scrolling="no"></iframe>
+                <div class="flex items-center justify-end gap-2 px-3 py-3 border-t border-gray-200 shrink-0">
+                    <a id="confirm-print-link" href="#" class="btn-primary-solid">Confirmer l'impression (PDF)</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo Modal -->
+        <div id="photo-modal" class="fixed inset-0 hidden items-center justify-center z-50">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closePhotoModal()"></div>
+            <div class="relative p-4 bg-emerald-50 rounded-lg z-10 border border-emerald-200 shadow-lg">
+                <img id="photo-modal-img" src="" alt="Photo" class="w-64 h-80 object-cover rounded-lg border border-white/30">
+                <div class="mt-4 text-center">
+                    <button class="btn-ghost" onclick="closePhotoModal()">Fermer</button>
+                </div>
+            </div>
+        </div>
+
         <script>
             function openMemberModal(id) {
                 const tpl = document.getElementById('card-template-' + id);
@@ -161,7 +187,7 @@
 
                 const printBtn = document.getElementById('member-modal-print');
                 printBtn.onclick = function() {
-                    printHtml(container.innerHTML);
+                    openPrintPreview(id);
                 };
             }
 
@@ -176,9 +202,7 @@
             }
 
             function printMemberCard(id) {
-                const tpl = document.getElementById('card-template-' + id);
-                if (!tpl) return;
-                printHtml(tpl.innerHTML);
+                openPrintPreview(id);
             }
 
             function printHtml(html) {
@@ -207,6 +231,42 @@
                 </body>
                 </html>`);
                 doc.close();
+            }
+
+            function openPrintPreview(id) {
+                const url = "{{ route('members.print.preview', ':id') }}".replace(':id', id);
+                const modal = document.getElementById('print-preview-modal');
+                const frame = document.getElementById('print-preview-frame');
+                const confirm = document.getElementById('confirm-print-link');
+                frame.src = url;
+                confirm.href = "{{ route('members.print', ':id') }}".replace(':id', id);
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            function closePrintPreview() {
+                const modal = document.getElementById('print-preview-modal');
+                const frame = document.getElementById('print-preview-frame');
+                frame.src = 'about:blank';
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+
+            function openPhotoModal(src) {
+                if (!src) return;
+                const modal = document.getElementById('photo-modal');
+                const img = document.getElementById('photo-modal-img');
+                img.src = src;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            function closePhotoModal() {
+                const modal = document.getElementById('photo-modal');
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                const img = document.getElementById('photo-modal-img');
+                img.src = '';
             }
         </script>
     </div>

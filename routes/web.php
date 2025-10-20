@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/members/{member}/edit', [MemberController::class, 'edit'])->name('members.edit');
     Route::match(['put','patch'], '/members/{member}', [MemberController::class, 'update'])->name('members.update');
     Route::delete('/members/{member}', [MemberController::class, 'destroy'])->name('members.destroy');
+    Route::get('/members/{member}/print', [MemberController::class, 'print'])->name('members.print');
+    Route::get('/members/{member}/print/preview', [MemberController::class, 'printPreview'])->name('members.print.preview');
 });
 
 // Profil (Breeze)

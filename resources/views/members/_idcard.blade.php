@@ -14,7 +14,7 @@
 .idcard-header {
   background-color: #CFEEDC;
   position: relative;
-  height: 120px;
+  height: 160px;
   display: grid;
   place-items: center;
 }
@@ -48,9 +48,9 @@
   text-align: center;
 }
 .idcard-body .photo {
-  width: 150px;
-  height: 150px;
-  border-radius: 16px;
+  width: 140px;
+  height: 140px;
+  border-radius: 24px;
   overflow: hidden;
   border: 1px solid #A7D7B3;
   box-shadow: 0 1px 6px rgba(0,0,0,0.05);
@@ -58,11 +58,11 @@
   background: white;
 }
 .idcard-body h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #333;
+  color: #3A3A3A;
 }
 
 /* --- Pied de carte --- */
@@ -101,7 +101,10 @@
   <!-- En-tête -->
   <div class="idcard-header">
       <div class="logo">
-          <img src="{{ asset('storage/A.D.jpg') }}" alt="Logo" class="w-full h-full object-contain p-2">
+          <!-- Logo utilisé dans le pop-up (aperçu à l'écran)
+               Placez votre image dans public/storage/ avec le nom "logo-card.png".
+               Pour changer plus tard, remplacez simplement ce fichier ou ajustez le chemin ci-dessous. -->
+          <img src="{{ asset('storage/logo-card.png') }}" alt="Logo" class="w-full h-full object-contain p-2">
       </div>
       <div class="idcard-notch"></div>
   </div>
@@ -109,8 +112,11 @@
   <!-- Photo + Nom -->
   <div class="idcard-body">
       <div class="photo">
-          @if (!empty($member->photo_path))
-              <img src="{{ asset('storage/'.$member->photo_path) }}" alt="photo" class="w-full h-full object-cover">
+          @php
+              $dbPath = $member->photo_path;
+          @endphp
+          @if (!empty($dbPath))
+              <img src="{{ asset('storage/'.ltrim($dbPath,'/')) }}" alt="photo" class="w-full h-full object-cover">
           @else
               <div class="w-full h-full grid place-items-center text-gray-400 text-sm">Photo</div>
           @endif
